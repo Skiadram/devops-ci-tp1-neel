@@ -42,20 +42,21 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-  test_e2e:
-    docker:
-      - image: postgres:9.6-jessie
-    environment:
-      POSTGRES_USER: psqluser
-      POSTGRES_DB: psdb
-    steps:
-      - run: 
-        command: yarn test:e2e
-          environment: 
-            DATABASE_URL: postgres://psqluser@localhost:5432/psdb
-            API_PORT: 3000
-            API_HOST: localhost
-            API_PROTOCOL: http 
+  database:
+        docker:
+            - image: postgres:9.6-jessie
+        environment:
+          POSTGRES_USER: psqluser
+          POSTGRES_DB: psdb
+          POSTGRES_PASSWORD: psqlpwd
+        steps:
+            - run: 
+                command: yarn test:e2e
+                environment: 
+                    DATABASE_URL: postgres://psqluser@localhost:5432/psdb
+                    API_PORT: 3000
+                    API_HOST: localhost
+                    API_PROTOCOL: http
 workflows:
   build_and_test:
     jobs:
