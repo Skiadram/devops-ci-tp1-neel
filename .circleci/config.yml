@@ -44,7 +44,7 @@ jobs:
             - ./node_modules
   database:
         docker:
-            - image: postgres:9.6-jessie
+            - image: circleci/postgres:latest
         environment:
           POSTGRES_USER: psqluser
           POSTGRES_DB: psdb
