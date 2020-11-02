@@ -22,7 +22,7 @@ jobs:
       - restore_cache:
           name: restore yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
-      - run: yarn lint && yarn format
+      - run: yarn lint && yarn format:check
       - save_cache:
           name: save yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
