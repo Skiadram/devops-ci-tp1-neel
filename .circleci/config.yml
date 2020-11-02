@@ -49,10 +49,10 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - lint:
+      - unit-test:
           requires:
             - build
-      - unit-test:
+      - lint:
           requires:
             - build
       
