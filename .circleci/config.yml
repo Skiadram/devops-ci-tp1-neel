@@ -1,9 +1,8 @@
 version: 2.1
 jobs:
   build:
-    machine:
-      image: windows-default
-    ressource_class: windows.medium
+    docker: 
+      - image: cimg/node:14.10.1
     steps:
       - checkout
-      - run: Write-Host 'Hello world'
+      - run: echo "hello world"
