@@ -5,6 +5,7 @@ jobs:
       - image: cimg/node:14.10.1
     steps:
       - checkout
+
       - restore_cache:
           name: restore yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
@@ -14,6 +15,7 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+
   lint:
     docker:
       - image: cimg/node:14.10.1
@@ -42,29 +44,7 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-  database:
-        docker:
-            - image: circleci/postgres:latest
-        environment:
-          POSTGRES_USER: psqluser
-          POSTGRES_DB: psdb
-          POSTGRES_PASSWORD: psqlpwd
-        steps:
-          - restore_cache:
-              name: restore yarn package cache
-              key: yarn-packages-v2{{ checksum "yarn.lock" }}
-          - run: 
-              command: yarn test:e2e
-              environment: 
-                  DATABASE_URL: postgres://psqluser@localhost:5432/psdb
-                  API_PORT: 3000
-                  API_HOST: localhost
-                  API_PROTOCOL: http
-          - save_cache:
-              name: save yarn package cache
-              key: yarn-packages-v2{{ checksum "yarn.lock" }}
-              paths:
-                - ./node_modules
+  
 workflows:
   build_and_test:
     jobs:
