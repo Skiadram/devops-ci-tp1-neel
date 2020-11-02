@@ -9,8 +9,10 @@ jobs:
       - restore_cache:
           name: restore yarn package cache
           keys:
-          - npm-v1-dependencies-{{ checksum "yarn.lock" }}
+            - npm-v1-dependencies-{{ checksum "yarn.lock" }}
       - save_cache:
           name: sa  ve yarn package cache
           keys:
-          - npm-v1-dependencies-{{ checksum "yarn.lock" }}
+            - npm-v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
