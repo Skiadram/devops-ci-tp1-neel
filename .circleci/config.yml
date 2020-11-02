@@ -55,9 +55,6 @@ workflows:
       - unit-test:
           requires:
             - build
-      - database:
-          requires:
-            - build
       
 
 
