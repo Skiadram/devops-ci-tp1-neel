@@ -1,39 +1,39 @@
-  version: 2.1
-  jobs:
-    build: &shared-config
-      docker: 
-        - image: cimg/node:14.10.1
-      steps:
-        - checkout
-      
-        - restore_cache:
-            name: restore yarn package cache
-            key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
-        - run: yarn global add node-gyp && yarn install
-        - save_cache:
-            name: sa  ve yarn package cache
-            key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
-            paths:
-              - ./node_modules
+version: 2.1
+jobs:
+  build: &shared-config
+    docker:
+      - image: cimg/node:14.10.1
+    steps:
+      - checkout
 
-    lint:
-      <<: *shared-config
-      steps:
-        - checkout
-        - run: yarn lint && yarn format:check
-    unit-test:
-      <<: *shared-config
-      steps:
-        - checkout
-        - run: yarn test:ci
-        
-  workflows:
-    build_and_test:
-      jobs:
-        - build
-        - unit-test:
-            requires:
-              - build
-        - lint:
-            requires:
-              - build
+      - restore_cache:
+          name: restore yarn package cache
+          key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
+      - run: yarn global add node-gyp && yarn install
+      - save_cache:
+          name: sa  ve yarn package cache
+          key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+
+  lint:
+    <<: *shared-config
+    steps:
+      - checkout
+      - run: yarn lint && yarn format:check
+  unit-test:
+    <<: *shared-config
+    steps:
+      - checkout
+      - run: yarn test:ci
+
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - unit-test:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
