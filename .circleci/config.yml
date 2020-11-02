@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  cache: &shared-config
+  build: &shared-config
     docker: 
       - image: cimg/node:14.10.1
     steps:
