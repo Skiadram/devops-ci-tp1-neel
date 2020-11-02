@@ -29,7 +29,7 @@ jobs:
           name: save yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
-            - ./node_modules 
+            - ./node_modules
   unit-test:
     docker:
       - image: cimg/node:14.10.1
