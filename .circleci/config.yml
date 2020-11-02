@@ -30,6 +30,7 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+            
   unit-test:
     docker:
       - image: cimg/node:14.10.1
@@ -44,23 +45,7 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-            
-  database:
-    docker:
-      - image: circleci/postgres:9.6.2-alpine
-        environment:
-          POSTGRES_USER: psqluser
-          POSTGRES_PASSWORD: psqlpassword
-          POSTGRES_DB: psdb
-    steps:
-      - checkout
-      - run: 
-          command: yarn test:e2e
-          environment:
-            DATABASE_URL: postgres://$POSTGRES_USER@localhost:5432/$POSTGRES_DB
-            API_PORT: 3000
-            API_HOST: localhost
-            API_PROTOCOL: http
+ 
 
 
 workflows:
