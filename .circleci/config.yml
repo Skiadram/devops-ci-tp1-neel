@@ -58,6 +58,18 @@ jobs:
           POSTGRES_USER: psqluser
           POSTGRES_PASSWORD: psqlpassword
           POSTGRES_DB: psdb
+    steps:
+      - checkout
+       - restore_cache:
+          name: restore yarn package cache
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
+      - run: yarn test:e2e
+      - save_cache:
+          name: save yarn package cache
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+
 
 workflows:
   build_and_test:
