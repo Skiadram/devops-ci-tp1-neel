@@ -11,21 +11,31 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
       - run: yarn global add node-gyp && yarn install
       - save_cache:
-          name: sa  ve yarn package cache
+          name: save yarn package cache
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
   lint:
-    <<: *shared-config
     steps:
       - checkout
+      - restore_cache:
+          name: restore yarn package cache
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
       - run: yarn lint && yarn format:check
+      - save_cache:
+          name: save yarn package cache
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
   unit-test:
-    <<: *shared-config
     steps:
       - checkout
+      - restore_cache:
+          name: restore yarn package cache
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
       - run: yarn test:ci
+      - save_cache:
+          name: save yarn package cache
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
 
 workflows:
   build_and_test:
