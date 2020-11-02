@@ -60,7 +60,7 @@ jobs:
           POSTGRES_DB: psdb
     steps:
       - checkout
-       - restore_cache:
+      - restore_cache:
           name: restore yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
       - run: yarn test:e2e
