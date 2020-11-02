@@ -5,7 +5,6 @@ jobs:
       - image: cimg/node:14.10.1
     steps:
       - checkout
-
       - restore_cache:
           name: restore yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
@@ -15,7 +14,6 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-
   lint:
     docker:
       - image: cimg/node:14.10.1
@@ -24,13 +22,12 @@ jobs:
       - restore_cache:
           name: restore yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
-      - run: yarn lint && yarn format:check
+      - run: yarn lint && yarn format
       - save_cache:
           name: save yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
-            - ./node_modules
-            
+            - ./node_modules        
   unit-test:
     docker:
       - image: cimg/node:14.10.1
@@ -45,9 +42,6 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
- 
-
-
 workflows:
   build_and_test:
     jobs:
@@ -58,3 +52,6 @@ workflows:
       - lint:
           requires:
             - build
+
+
+            
