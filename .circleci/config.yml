@@ -17,6 +17,8 @@ jobs:
             - ./node_modules
 
   lint:
+    docker:
+      - image: cimg/node:14.10.1
     steps:
       - checkout
       - restore_cache:
@@ -27,6 +29,8 @@ jobs:
           name: save yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
   unit-test:
+    docker:
+      - image: cimg/node:14.10.1
     steps:
       - checkout
       - restore_cache:
