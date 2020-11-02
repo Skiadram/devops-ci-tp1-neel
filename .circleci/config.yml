@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  cache: &shared-config
     docker: 
       - image: cimg/node:14.10.1
     steps:
@@ -15,3 +15,14 @@ jobs:
           key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+
+  lint:
+    <<: *shared-config
+    steps:
+      - checkout
+      - run: yarn lint && yarn format:check
+  unit-test:
+    <<: *shared-config
+    steps:
+      - checkout
+      - run: yarn test:ci
