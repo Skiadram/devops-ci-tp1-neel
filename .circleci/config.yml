@@ -46,8 +46,8 @@ jobs:
     docker:
       - image: postgres:9.6-jessie
     environment:
-        POSTGRES_USER: psqluser
-        POSTGRES_DB: psdb
+      POSTGRES_USER: psqluser
+      POSTGRES_DB: psdb
     steps:
       - run: 
         command: yarn test:e2e
