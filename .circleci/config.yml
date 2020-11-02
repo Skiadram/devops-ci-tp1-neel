@@ -3,7 +3,10 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test:
+      - unit-test:
+        requires:
+          - build
+      - lint:
         requires:
           - build
 
@@ -23,7 +26,7 @@ jobs:
           name: sa  ve yarn package cache
           key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache/yarn
+            - ./node_modules
 
   lint:
     <<: *shared-config
