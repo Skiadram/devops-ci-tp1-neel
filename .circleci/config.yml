@@ -50,21 +50,21 @@ jobs:
           POSTGRES_DB: psdb
           POSTGRES_PASSWORD: psqlpwd
         steps:
-            - restore_cache:
-          name: restore yarn package cache
-          key: yarn-packages-v2{{ checksum "yarn.lock" }}
-            - run: 
-                command: yarn test:e2e
-                environment: 
-                    DATABASE_URL: postgres://psqluser@localhost:5432/psdb
-                    API_PORT: 3000
-                    API_HOST: localhost
-                    API_PROTOCOL: http
+          - restore_cache:
+              name: restore yarn package cache
+              key: yarn-packages-v2{{ checksum "yarn.lock" }}
+          - run: 
+              command: yarn test:e2e
+              environment: 
+                  DATABASE_URL: postgres://psqluser@localhost:5432/psdb
+                  API_PORT: 3000
+                  API_HOST: localhost
+                  API_PROTOCOL: http
           - save_cache:
-          name: save yarn package cache
-          key: yarn-packages-v2{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
+              name: save yarn package cache
+              key: yarn-packages-v2{{ checksum "yarn.lock" }}
+              paths:
+                - ./node_modules
 workflows:
   build_and_test:
     jobs:
