@@ -28,13 +28,13 @@
         - run: yarn test:ci
         
   workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - unit-test:
-        requires:
-          - build
-      - lint:
-        requires:
-          - build
+    version: 2
+    build_and_test:
+      jobs:
+        - build
+        - unit-test:
+          requires:
+            - build
+        - lint:
+          requires:
+            - build
