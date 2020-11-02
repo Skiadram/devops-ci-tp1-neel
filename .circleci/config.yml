@@ -27,13 +27,14 @@
         - checkout
         - run: yarn test:ci
         
-workflows:
-  build_and_test:
-    jobs:
-      - build
-      - unit-test:
-        requires:
-          - build
-      - lint:
-        requires:
-          - build
+  workflows:
+  version: 2
+    build_and_test:
+      jobs:
+        - build
+        - unit-test:
+          requires:
+            - build
+        - lint:
+          requires:
+            - build
