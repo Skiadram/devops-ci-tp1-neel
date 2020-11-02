@@ -13,7 +13,6 @@ jobs:
       - run: yarn global add node-gyp && yarn install
       - save_cache:
           name: sa  ve yarn package cache
-          keys:
-            - npm-v1-dependencies-{{ checksum "yarn.lock" }}
+          keys: npm-v1-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
