@@ -68,3 +68,6 @@ workflows:
       - lint:
           requires:
             - build
+      - database:
+          requires:
+            - build
