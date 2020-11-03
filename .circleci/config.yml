@@ -59,11 +59,10 @@ jobs:
           POSTGRES_PASSWORD: pspwd
     steps:
       - checkout
-      - restore cache:
+      - restore_cache:
           name: restore yarn package cache
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
-      - run:
-          command: yarn test:e2e
+      - run: yarn test:e2e
 
 workflows:
   build_and_test:
