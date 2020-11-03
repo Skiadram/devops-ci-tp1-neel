@@ -43,6 +43,20 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+  database:
+    docker:
+      - image: cimg/node:12.18
+        environment:
+          DATABASE_URL: "postgres://psuser:pspwd@localhost:5432/psdb"
+          API_PORT: 3000
+          API_HOST: localhost
+          API_PROTOCOL: http
+          JWT_SECRET: something
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: psuser
+          POSTGRES_DB: psdb
+          POSTGRES_PASSWORD: pspwd
 
 workflows:
   build_and_test:
