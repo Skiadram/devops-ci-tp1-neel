@@ -112,10 +112,10 @@ workflows:
           requires:
             - build
       - build_image:
-            requires: 
-                - test
-                - database
-                - lint
-        - publish_latest:
-            requires: 
-                - build_image
+          requires: 
+              - test
+              - database
+              - lint
+      - publish_latest:
+          requires: 
+              - build_image
