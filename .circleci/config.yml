@@ -92,7 +92,7 @@ jobs:
           - run:
               name: Publish Docker Image to Docker Hub
               command: |
-                  echo "$DOCKERHUB_PASS" | docker login -u sukiadoramu --password-stdin
+                  echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                   docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
                   docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:latest
                   docker push sukiadoramu/my-awesome-ci-expr:latest
