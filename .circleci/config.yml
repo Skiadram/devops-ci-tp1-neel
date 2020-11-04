@@ -129,7 +129,7 @@ workflows:
       - publish_latest:
           requires: 
               - build_image
-      - doc_server_artifact:
+      - artifact:
           requires:
             - test
             - database
