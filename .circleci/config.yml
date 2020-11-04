@@ -64,39 +64,49 @@ jobs:
           key: yarn-packages-v2{{ checksum "yarn.lock" }}
       - run: yarn test:e2e
   build_image:
-        docker:
-            - image: circleci/buildpack-deps:stretch
-        steps:
-            - checkout
-            - setup_remote_docker
-            - run:
-                name: Build Docker image
-                command: docker build -t sukiadoramu/my-awesome-ci-expr:app .
-            - run:
-                name: Archive Docker image
-                command: docker save -o image.tar sukiadoramu/my-awesome-ci-expr
-            - persist_to_workspace:
-                root: .
-                paths:
-                    - ./image.tar
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: docker build -t sukiadoramu/my-awesome-ci-expr:app .
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar sukiadoramu/my-awesome-ci-expr
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
   publish_latest:
-      docker:
-          - image: circleci/buildpack-deps:stretch       
-      steps:
-          - attach_workspace:
-              at: /tmp/workspace
-          - setup_remote_docker
-          - run:
-              name: Load archived Docker image
-              command: docker load -i /tmp/workspace/image.tar
-          - run:
-              name: Publish Docker Image to Docker Hub
-              command: |
-                  echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-                  docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
-                  docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:latest
-                  docker push sukiadoramu/my-awesome-ci-expr:latest
-                  docker push sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
+    docker:
+      - image: circleci/buildpack-deps:stretch       
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
+            docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:latest
+            docker push sukiadoramu/my-awesome-ci-expr:latest
+            docker push sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
+  artifact:
+    docker:
+      - image: cimg/node:12.18
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-packages-v2{{ checksum "yarn.lock" }}
+      - run: yarn doc:build
+      - store_artifacts:
+          path: doc-server/
 
 workflows:
   build_and_test:
@@ -119,3 +129,8 @@ workflows:
       - publish_latest:
           requires: 
               - build_image
+      - doc_server_artifact:
+          requires:
+            - test
+            - database
+            - lint
