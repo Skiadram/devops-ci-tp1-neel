@@ -79,24 +79,24 @@ jobs:
                 root: .
                 paths:
                     - ./image.tar
-    publish_latest:
-        docker:
-            - image: circleci/buildpack-deps:stretch       
-        steps:
-            - attach_workspace:
-                at: /tmp/workspace
-            - setup_remote_docker
-            - run:
-                name: Load archived Docker image
-                command: docker load -i /tmp/workspace/image.tar
-            - run:
-                name: Publish Docker Image to Docker Hub
-                command: |
-                    echo "$DOCKERHUB_PASS" | docker login -u sukiadoramu --password-stdin
-                    docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
-                    docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:latest
-                    docker push sukiadoramu/my-awesome-ci-expr:latest
-                    docker push sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
+  publish_latest:
+      docker:
+          - image: circleci/buildpack-deps:stretch       
+      steps:
+          - attach_workspace:
+              at: /tmp/workspace
+          - setup_remote_docker
+          - run:
+              name: Load archived Docker image
+              command: docker load -i /tmp/workspace/image.tar
+          - run:
+              name: Publish Docker Image to Docker Hub
+              command: |
+                  echo "$DOCKERHUB_PASS" | docker login -u sukiadoramu --password-stdin
+                  docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
+                  docker tag sukiadoramu/my-awesome-ci-expr:app sukiadoramu/my-awesome-ci-expr:latest
+                  docker push sukiadoramu/my-awesome-ci-expr:latest
+                  docker push sukiadoramu/my-awesome-ci-expr:$CIRCLE_BUILD_NUM
 
 workflows:
   build_and_test:
